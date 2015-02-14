@@ -32,7 +32,9 @@ class Launcher(object):
             logging.getLogger().setLevel(logging.DEBUG)
 
         # configure the target
-        (target_section,) = ns.get_args(str, names=['TARGET'], minimum=1, maximum=1)
+        args = ns.get_args(str, names=['TARGET'], minimum=1)
+        self.app_args = args[1:]
+        target_section = args[0]
         try:
             target_settings = ns.get_section(target_section)
         except:
@@ -56,4 +58,4 @@ class Launcher(object):
         """
         Run the specified target using the configured JVM.
         """
-        return self.jvm.run(self.target) 
+        return self.jvm.run(self.target, self.app_args) 
